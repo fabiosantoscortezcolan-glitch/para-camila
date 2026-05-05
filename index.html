@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Camila ❤️</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+}
+
+/* CENTRADO */
+.pantalla {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.pantalla.activa {
+    display: flex;
+}
+
+/* tarjeta */
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 380px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 1;
+}
+
+/* títulos */
+h2 {
+    text-align: center;
+    color: #ff4d6d;
+}
+
+/* inputs */
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+/* botones */
+button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    background: linear-gradient(135deg, #ff4d6d, #ff758c);
+    color: white;
+    cursor: pointer;
+}
+
+/* preguntas */
+.pregunta { margin-top: 15px; }
+
+.pregunta p {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+label {
+    display: block;
+    margin: 6px 0;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+label:hover {
+    background: #ffe0e9;
+}
+
+/* CARTA */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+
+    display: none; /* 🔥 clave */
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.carta {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    width: 320px;
+    text-align: center;
+    line-height: 1.5;
+    position: relative;
+    z-index: 10000;
+}
+
+#texto {
+    white-space: pre-line;
+    color: #444;
+}
+
+/* quiz */
+#quiz.pantalla.activa {
+    align-items: flex-start;
+    padding-top: 30px;
+}
+
+#msg {
+    text-align: center;
+}
+
+/* animaciones */
+@keyframes subir {
+    from { transform: translateY(0); opacity:1; }
+    to { transform: translateY(-100vh); opacity:0; }
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="pantalla activa">
+<div class="card">
+<h2>Bienvenida Camila ❤️</h2>
+
+<input id="user" type="text" placeholder="Usuario">
+<input id="pass" type="password" placeholder="Contraseña">
+
+<p id="error" style="color:red"></p>
+
+<button onclick="login()">Entrar 💖</button>
+</div>
+</div>
+
+<!-- INICIO -->
+<div id="inicio" class="pantalla">
+<div class="card">
+<h2>Bienvenida mi amor 💕</h2>
+<p style="text-align:center;">Te preparé algo especial solo para ti💖</p>
+<button onclick="mostrar('quiz')">Comenzar 💌</button>
+</div>
+</div>
+
+<!-- CUESTIONARIO -->
+<div id="quiz" class="pantalla">
+<div class="card">
+
+<h2>Responde Correctamente💖</h2>
+
+<div class="pregunta">
+<p>1. ¿Qué eres para mí? 😊</p>
+<label><input type="radio" name="p1" value="0"> Algo normal</label>
+<label><input type="radio" name="p1" value="1"> Todo ❤️</label>
+</div>
+
+<div class="pregunta">
+<p>2. ¿Cuánto te amo? 💕</p>
+<label><input type="radio" name="p2" value="0"> Poco</label>
+<label><input type="radio" name="p2" value="1"> Hasta el infinito y más allá❤️</label>
+</div>
+
+<div class="pregunta">
+<p>3. ¿Quién es la más hermosa? 😍</p>
+<label><input type="radio" name="p3" value="1"> Camila Obviamente❤️</label>
+<label><input type="radio" name="p3" value="0"> Nadie</label>
+</div>
+
+<div class="pregunta">
+<p>4. ¿Qué soy para ti? 💘</p>
+<label><input type="radio" name="p4" value="0"> Alguien más</label>
+<label><input type="radio" name="p4" value="1"> Tu persona favorita del mundo❤️</label>
+</div>
+
+<div class="pregunta">
+<p>5. ¿Quién te ama con todo su corazón?😊</p>
+<label><input type="radio" name="p5" value="1"> Fabio ❤️</label>
+<label><input type="radio" name="p5" value="0"> Nadie</label>
+</div>
+
+<button onclick="resultado()">Ver resultado 💌</button>
+
+</div>
+</div>
+
+<!-- RESULTADO -->
+<div id="res" class="pantalla">
+<div class="card">
+<h2 id="titulo"></h2>
+<p id="msg"></p>
+
+<button onclick="carta()">Leer carta 💌</button>
+</div>
+</div>
+
+<!-- CARTA -->
+<div id="overlay" class="overlay">
+<div class="carta">
+<p id="texto"></p>
+<button onclick="cerrar()">Cerrar 💕</button>
+</div>
+</div>
+
+<script>
+// cambiar pantalla
+function mostrar(id){
+    document.querySelectorAll(".pantalla").forEach(p => p.classList.remove("activa"));
+    document.getElementById(id).classList.add("activa");
+}
+
+// login
+function login(){
+    let u = document.getElementById("user").value;
+    let p = document.getElementById("pass").value;
+
+    if(u === "Camila" && p === "teamomucho"){
+        mostrar("inicio");
+    } else {
+        document.getElementById("error").innerText = "Incorrecto 😢 intenta otra vez mi amor";
+    }
+}
+
+// resultado
+function resultado(){
+    let total = 0;
+
+    for(let i=1;i<=5;i++){
+        let r = document.querySelector('input[name="p'+i+'"]:checked');
+        if(r) total += parseInt(r.value);
+    }
+
+    if(total == 5){
+        titulo.innerText="Perfecto 🥰";
+        msg.innerText="Respondiste todo perfecto princesa❤️";
+    } else if(total >= 3){
+        titulo.innerText="Casi perfecto 💕";
+        msg.innerText="Lo hiciste muy bien 😊";
+    } else {
+        titulo.innerText="Ups 😅";
+        msg.innerText="Igual te amo 💖";
+    }
+
+    mostrar("res");
+}
+
+// CARTA CORREGIDA
+function carta(){
+    const overlay = document.getElementById("overlay");
+    const texto = document.getElementById("texto");
+
+    overlay.style.display = "flex"; // 🔥 esto SIEMPRE funciona
+    texto.textContent = "";
+
+    let mensaje = `Camila... 💖
+
+Desde que llegaste a mi vida todo cambió para bien.
+No sé cómo explicarlo exactamente, pero haces que todo tenga más sentido, que los días sean más bonitos y que incluso los momentos difíciles valgan la pena.
+
+Me encanta tu forma de ser, tu sonrisa, tu manera de hablar y hasta los pequeños detalles que quizás tú no notas, pero que para mí significan mucho.
+
+Gracias por estar conmigo, por apoyarme, por hacerme sentir especial y por simplemente ser tú.
+
+Quiero que sepas que no eres solo alguien importante... eres todo para mí ❤️
+
+Te amo hoy, mañana y siempre 💘
+
+— Fabio 😘`;
+
+    let i = 0;
+
+    function escribir(){
+        if(i < mensaje.length){
+            texto.textContent += mensaje.charAt(i);
+            i++;
+            setTimeout(escribir, 25); // rápido
+        }
+    }
+
+    escribir();
+}
+
+// cerrar carta
+function cerrar(){
+    document.getElementById("overlay").style.display="none";
+}
+
+// corazones
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = "100vh";
+    heart.style.fontSize = "18px";
+    heart.style.animation = "subir 4s linear";
+    heart.style.zIndex = "0";
+    heart.style.pointerEvents = "none";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+}, 300);
+</script>
+
+</body>
+</html>
+
+
+
+
